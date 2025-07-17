@@ -38,11 +38,16 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def handle_api_proxy(self):
         try:
             if not UIPATH_TOKEN:
+                print("❌ UIPATH_TOKEN is not set")
                 self.send_response(500)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': 'UIPATH_TOKEN not configured'}).encode())
                 return
+            
+            # Debug: Log token info (first/last 10 chars only for security)
+            token_preview = f"{UIPATH_TOKEN[:10]}...{UIPATH_TOKEN[-10:]}" if len(UIPATH_TOKEN) > 20 else "token_too_short"
+            print(f"🔑 Using token: {token_preview}")
             
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length) if content_length > 0 else None
@@ -55,6 +60,8 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
                 
             target_url = urllib.parse.unquote(query_params['url'][0])
+            print(f"🎯 Calling: {target_url}")
+            
             req = urllib.request.Request(target_url, data=post_data, method=self.command)
             
             # Copy headers
@@ -66,6 +73,7 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             
             try:
                 with urllib.request.urlopen(req) as response:
+                    print(f"✅ UiPath API responded with status: {response.getcode()}")
                     self.send_response(response.getcode())
                     for header, value in response.headers.items():
                         if header.lower() not in ['content-length', 'transfer-encoding']:
@@ -74,12 +82,14 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     self.wfile.write(response.read())
                     
             except HTTPError as e:
+                print(f"❌ UiPath API error: {e.code} - {e}")
                 self.send_response(e.code)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': f'HTTP {e.code}', 'message': str(e)}).encode())
                 
         except Exception as e:
+            print(f"❌ Proxy error: {e}")
             self.send_response(500)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
@@ -94,6 +104,9 @@ def start_server():
         
         if not UIPATH_TOKEN:
             print("⚠️ Warning: UIPATH_TOKEN environment variable not set")
+        else:
+            token_preview = f"{UIPATH_TOKEN[:10]}...{UIPATH_TOKEN[-10:]}" if len(UIPATH_TOKEN) > 20 else "token_too_short"
+            print(f"✅ UIPATH_TOKEN is set: {token_preview}")
         
         with socketserver.TCPServer((HOST, PORT), CORSHTTPRequestHandler) as httpd:
             print(f"🚀 UiASK Server running at: http://{HOST}:{PORT}")

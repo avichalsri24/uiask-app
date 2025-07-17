@@ -1,0 +1,11 @@
+{
+  "name": "UiASK",
+  "description": "Natural Language to SQL using UiPath AI",
+  "keywords": ["sql", "natural-language", "uipath", "ai"],
+  "env": {
+    "UIPATH_TOKEN": {
+      "description": "UiPath authentication token",
+      "required": true
+    }
+  }
+} 

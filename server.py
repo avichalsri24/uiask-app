@@ -48,6 +48,7 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             # Debug: Log token info (first/last 10 chars only for security)
             token_preview = f"{UIPATH_TOKEN[:10]}...{UIPATH_TOKEN[-10:]}" if len(UIPATH_TOKEN) > 20 else "token_too_short"
             print(f"🔑 Using token: {token_preview}")
+            print(f"🔑 Token length: {len(UIPATH_TOKEN)}")
             
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length) if content_length > 0 else None
@@ -68,8 +69,15 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             for header_name in ['content-type', 'accept', 'accept-language', 'x-uipath-internal-tenantid', 'referer']:
                 if header_name in self.headers:
                     req.add_header(header_name, self.headers[header_name])
+                    print(f"📋 Copied header: {header_name}")
             
-            req.add_header('authorization', f'Bearer {UIPATH_TOKEN}')
+            # Add authorization header with proper capitalization
+            auth_header = f'Bearer {UIPATH_TOKEN}'
+            req.add_header('Authorization', auth_header)
+            print(f"🔐 Added Authorization header: Bearer {UIPATH_TOKEN[:20]}...")
+            
+            # Debug: Print all headers that will be sent
+            print(f"📤 All request headers: {dict(req.headers)}")
             
             try:
                 with urllib.request.urlopen(req) as response:
@@ -83,6 +91,7 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     
             except HTTPError as e:
                 print(f"❌ UiPath API error: {e.code} - {e}")
+                print(f"❌ Error details: {e.read().decode('utf-8') if hasattr(e, 'read') else 'No details'}")
                 self.send_response(e.code)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
@@ -107,6 +116,7 @@ def start_server():
         else:
             token_preview = f"{UIPATH_TOKEN[:10]}...{UIPATH_TOKEN[-10:]}" if len(UIPATH_TOKEN) > 20 else "token_too_short"
             print(f"✅ UIPATH_TOKEN is set: {token_preview}")
+            print(f"✅ Token length: {len(UIPATH_TOKEN)}")
         
         with socketserver.TCPServer((HOST, PORT), CORSHTTPRequestHandler) as httpd:
             print(f"🚀 UiASK Server running at: http://{HOST}:{PORT}")

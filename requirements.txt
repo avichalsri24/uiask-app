@@ -1,1 +1,5 @@
-# This app uses only Python standard library - no external dependencies required 
+# Environment variables
+python-dotenv>=1.0.0
+
+# Note: Using Python standard library for HTTP server
+# python-version>=3.8 

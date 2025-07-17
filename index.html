@@ -1075,11 +1075,13 @@
         // Configuration for API endpoints
         const API_CONFIG = {
             generateSqlEndpoint: '/api/generate-sql',
-            executeQueryEndpoint: '/api/execute-query'
+            executeQueryEndpoint: '/api/execute-query',
+            configEndpoint: '/api/config'
         };
 
         // Global variables
         let sqlEditor;
+        let appConfig = null;
 
 
         // DOM Elements
@@ -1344,7 +1346,16 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                     throw new Error('Please select an ontology');
                 }
                 
-                // UiPath API endpoint via local proxy
+                // Load configuration from server (tokens stored securely in environment variables)
+                if (!appConfig) {
+                    throw new Error('Configuration not loaded. Please refresh the page.');
+                }
+                
+                if (!appConfig.uipath_token) {
+                    throw new Error('UiPath token not configured. Please set UIPATH_TOKEN environment variable.');
+                }
+                
+                // Use proxy to avoid CORS issues
                 const targetUrl = 'https://staging.uipath.com/182cea2d-b8e8-4902-8641-432194600740/93ca45a7-470c-4ff8-bad9-13675fad7267/agentsruntime_/api/execution/agents/1c303094-d506-4b43-8a70-ccf85601e6d1/start?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577';
                 const apiUrl = `/api/proxy?url=${encodeURIComponent(targetUrl)}`;
                 
@@ -1435,16 +1446,17 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                     }
                 };
 
-                // Make the API call (authorization will be added by the backend)
+                // Make the API call through the proxy (hardcoded token included)
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'accept': '*/*',
                         'accept-language': 'en-US,en;q=0.9,ko;q=0.8,nl;q=0.7,pt;q=0.6,bho;q=0.5,bs;q=0.4,ga;q=0.3',
                         'content-type': 'application/json',
+                        'authorization': `Bearer ${appConfig.uipath_token}`,
                         'origin': 'https://staging.uipath.com',
                         'referer': 'https://staging.uipath.com/docsagents/studio_/designer/1c303094-d506-4b43-8a70-ccf85601e6d1?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577',
-                        'x-uipath-internal-tenantid': '93ca45a7-470c-4ff8-bad9-13675fad7267'
+                        'x-uipath-internal-tenantid': appConfig.tenant_id
                     },
                     body: JSON.stringify(requestBody)
                 });
@@ -1499,8 +1511,9 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                             'accept': '*/*',
                             'accept-language': 'en-US,en;q=0.9,ko;q=0.8,nl;q=0.7,pt;q=0.6,bho;q=0.5,bs;q=0.4,ga;q=0.3',
                             'content-type': 'application/json',
+                            'authorization': `Bearer ${appConfig.uipath_token}`,
                             'referer': 'https://staging.uipath.com/docsagents/studio_/designer/1c303094-d506-4b43-8a70-ccf85601e6d1?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577',
-                            'x-uipath-internal-tenantid': '93ca45a7-470c-4ff8-bad9-13675fad7267'
+                            'x-uipath-internal-tenantid': appConfig.tenant_id
                         }
                     });
                     
@@ -1850,9 +1863,27 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
 
 
 
+        // Load application configuration
+        async function loadConfig() {
+            try {
+                const response = await fetch(API_CONFIG.configEndpoint);
+                if (!response.ok) {
+                    throw new Error(`Failed to load config: ${response.status}`);
+                }
+                appConfig = await response.json();
+                console.log('✅ Configuration loaded successfully');
+            } catch (error) {
+                console.error('❌ Failed to load configuration:', error);
+                showError('Failed to load application configuration. Please refresh the page.');
+            }
+        }
+
         // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 UiASK Application Initialized');
+            
+            // Load configuration first
+            await loadConfig();
             
             // Initialize CodeMirror SQL Editor
             initializeSqlEditor();

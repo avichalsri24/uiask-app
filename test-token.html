@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UiPath Token Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 UiPath Token Test</h1>
+    <p>This will test if your UiPath token is working by calling a simple API.</p>
+    
+    <button onclick="testToken()">Test Token</button>
+    
+    <div id="result"></div>
+
+    <script>
+        async function testToken() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing token...</p>';
+            
+            try {
+                // Test with a simpler UiPath API endpoint
+                const testUrl = 'https://staging.uipath.com/182cea2d-b8e8-4902-8641-432194600740/93ca45a7-470c-4ff8-bad9-13675fad7267/identity_/api/Account/GetCurrentUser';
+                const apiUrl = `/api/proxy?url=${encodeURIComponent(testUrl)}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Token Works!</h3>
+                            <p>Status: ${response.status}</p>
+                            <p>Your UiPath user: ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Token Issue</h3>
+                            <p>Status: ${response.status}</p>
+                            <p>Error: ${errorText}</p>
+                            <p><strong>If 403:</strong> Token expired or wrong permissions</p>
+                            <p><strong>If 401:</strong> Token invalid</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Network Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

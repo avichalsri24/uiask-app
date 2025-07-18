@@ -26,6 +26,7 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .header {
@@ -353,6 +354,9 @@
             padding: 24px;
             line-height: 1.7;
             color: #374151;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .result-content p {
@@ -525,6 +529,7 @@
             padding: 30px;
             background: #ffffff;
             border-top: 1px solid #e2e8f0;
+            overflow: hidden;
         }
 
         .results-header {
@@ -635,6 +640,9 @@
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #e2e8f0;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .explanation-section:last-child,
@@ -677,14 +685,46 @@
             overflow: auto;
             margin-top: 15px;
             max-height: 400px;
-            max-width: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .data-table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .data-table-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .data-table-container::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+
+        .data-table-container::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        .data-table-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to left, rgba(248, 250, 252, 0.8), transparent);
+            pointer-events: none;
+            border-radius: 0 12px 12px 0;
         }
 
         .results-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            min-width: 600px;
+            min-width: 800px;
         }
 
         .results-table th {
@@ -697,6 +737,12 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+            max-width: 200px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         .results-table td {
@@ -705,6 +751,9 @@
             color: #374151;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 13px;
+            max-width: 200px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .results-table tr:last-child td {
@@ -727,6 +776,15 @@
             font-weight: 500;
             border-top: 1px solid #e2e8f0;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scroll-hint {
+            color: #94a3b8;
+            font-size: 11px;
+            font-style: italic;
         }
 
 
@@ -1537,7 +1595,7 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                 console.log('Job started:', startData);
                 
                 if (startData.job_key) {
-                    showNotification(`✅ Job started! Key: ${startData.job_key}`, 'success');
+                    showNotification(`✅ Job started!`, 'success');
                     setLoadingMessage('Job started, initializing polling...');
                     updateResultsBufferText('Job started, initializing polling...');
                     
@@ -1578,6 +1636,7 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                 }
                 
                 visualAttempts = Math.min(visualAttempts + 1, maxAttempts);
+                const progressMessage = `Polling for results... (${visualAttempts}/${maxAttempts})`;
                 console.log('📊 Visual progress update:', progressMessage);
                 updateResultsBufferText(progressMessage);
                 setLoadingMessage(progressMessage);
@@ -1764,7 +1823,12 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
             
             if (results.data && Array.isArray(results.data) && results.data.length > 0) {
                 html += `<div id="dataDisplay">${formatAsTable(results.data)}</div>`;
-                html += `<div class="table-info">${results.data.length} row(s) returned</div>`;
+                const columnCount = Object.keys(results.data[0]).length;
+                const scrollHint = columnCount > 6 ? '<span class="scroll-hint">← Scroll horizontally to view all columns →</span>' : '';
+                html += `<div class="table-info">
+                    <span>${results.data.length} row(s) returned</span>
+                    ${scrollHint}
+                </div>`;
             } else if (results.message) {
                 html += `<div class="result-paragraph">${results.message}</div>`;
             } else {

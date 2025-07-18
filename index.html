@@ -546,6 +546,189 @@
             align-items: center;
         }
 
+        .format-selector {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .format-selector label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .format-btn {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .format-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #475569;
+        }
+
+        .format-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .format-btn:first-of-type {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+
+        .format-btn:not(:first-of-type):not(:last-of-type) {
+            border-radius: 0;
+            border-right: none;
+        }
+
+        .format-btn:last-of-type {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .copy-btn {
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #475569;
+        }
+
+        .copy-btn.copied {
+            background: #dcfce7;
+            border-color: #bbf7d0;
+            color: #166534;
+        }
+
+        /* Structured Results Styles */
+        .explanation-section,
+        .sql-query-section,
+        .execution-results-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .explanation-section:last-child,
+        .sql-query-section:last-child,
+        .execution-results-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .status-badge.success {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #15803d;
+            border: 1px solid #10b981;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-badge.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .data-table-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: auto;
+            margin-top: 15px;
+            max-height: 400px;
+            max-width: 100%;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 600px;
+        }
+
+        .results-table th {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+        }
+
+        .results-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #374151;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .results-table tr:hover {
+            background: #f1f5f9;
+        }
+
+        .table-info {
+            padding: 12px 16px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
 
 
         .results-container {
@@ -932,8 +1115,8 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1>UiAsk</h1>
-            <p>Take a peek into your data using Natural Language</p>
+            <h1>C360 AI <span class="rocket-emoji">🚀</span></h1>
+            <p>Customer 360 data using Natural Language on your fingertips</p>
         </div>
 
         <div class="main-content">
@@ -941,16 +1124,6 @@
                 <label for="naturalQuery">Write your Natural Language Query</label>
                 
                 <div class="source-selection">
-                    <div class="source-group">
-                        <label for="primarySource">Source</label>
-                        <select id="primarySource" class="source-select">
-                            <option value="">Select...</option>
-                            <option value="e360">E360</option>
-                            <option value="datafabric">DataFabric</option>
-                            <option value="snowflake">Snowflake</option>
-                            <option value="add_source" data-action="add">➕ Add New</option>
-                        </select>
-                    </div>
                     
                     <div class="source-group">
                         <label for="ontologySelect">Ontology</label>
@@ -1336,184 +1509,93 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
             try {
                 // Show results buffer animation
                 showResultsBuffer();
-                updateResultsBufferText('Initializing agent...');
+                updateResultsBufferText('Starting orchestrator job...');
                 
-                // Get selected ontology
-                const ontologySelect = document.getElementById('ontologySelect');
-                const selectedOntology = ontologySelect.value;
-                
-                if (!selectedOntology) {
-                    throw new Error('Please select an ontology');
-                }
-                
-                // Load configuration from server (tokens stored securely in environment variables)
+                // Load configuration from server
                 if (!appConfig) {
                     throw new Error('Configuration not loaded. Please refresh the page.');
                 }
                 
-                if (!appConfig.uipath_token) {
-                    throw new Error('UiPath token not configured. Please set UIPATH_TOKEN environment variable.');
-                }
-                
-                // Use proxy to avoid CORS issues
-                const targetUrl = 'https://staging.uipath.com/182cea2d-b8e8-4902-8641-432194600740/93ca45a7-470c-4ff8-bad9-13675fad7267/agentsruntime_/api/execution/agents/1c303094-d506-4b43-8a70-ccf85601e6d1/start?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577';
-                const apiUrl = `/api/proxy?url=${encodeURIComponent(targetUrl)}`;
-                
-                // Request body
-                const requestBody = {
-                    "agent": {
-                        "id": "1c303094-d506-4b43-8a70-ccf85601e6d1",
-                        "version": "1.0.0",
-                        "name": "Agent",
-                        "systemPrompt": {
-                            "content": "You are a highly accurate, detail-oriented SQL generation and execution assistant.\n\nYour task is to convert natural language questions into SQL queries strictly based on the ontology (in OWL Format) and execute it using the SQL Query Execution Engine and provide the results in Natural language.\n\nImportant instructions:\n1. Use only the tables and columns defined in the ontology below.\n2. Respect the relationships and constraints as defined.\n3. Include correct filters and groupings implied by the question (e.g., \"last month\", \"active employees\", \"top contributors\").\n4. Always prefix table names with sadasd.CloudToolsDataDev.dbo. in the query.\n5. Use ANSI SQL syntax compatible with Dremio:\n   - Use LIMIT N to restrict rows (do not use TOP or FETCH FIRST).\n   - Use CURRENT_DATE or CURRENT_TIMESTAMP instead of GETDATE().\n   - Use INTERVAL syntax for date arithmetic (e.g., merged_at >= CURRENT_DATE - INTERVAL '90' DAY).\n   - Avoid SQL Server–specific functions and keywords.\n6. The SQL generated MUST NOT have TOP in it, use LIMIT instead."
-                        },
-                        "userPrompt": {
-                            "content": "user_query: {{user_query}}\nontology: {{ontology}}\n"
-                        },
-                        "inputSchema": {
-                            "type": "object",
-                            "properties": {
-                                "user_query": {"type": "string"},
-                                "ontology": {"type": "string"}
-                            }
-                        },
-                        "outputSchema": {
-                            "type": "object",
-                            "properties": {
-                                "content": {"type": "string", "description": "Output content"},
-                                "sql_query": {"type": "string"}
-                            }
-                        },
-                        "settings": {
-                            "model": "gpt-4o-2024-11-20",
-                            "maxTokens": 16384,
-                            "temperature": 0,
-                            "engine": "basic-v1"
-                        },
-                        "resources": [
-                            {
-                                "$resourceType": "tool",
-                                "id": "7d837b52-96e0-42ce-af77-e32759b8481c",
-                                "referenceKey": "a526eb16-96a1-4714-9832-a5a98cf68594",
-                                "name": "Dremio_SQL_Execution ",
-                                "type": "api",
-                                "description": "SQL Query Execution Engine",
-                                "location": "external",
-                                "inputSchema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "content": {"type": "string", "description": "Use this tool to execute the sql queries generated and retrieve results."}
-                                    }
-                                },
-                                "outputSchema": {"type": "object", "properties": {}},
-                                "settings": {},
-                                "properties": {
-                                    "processName": "Dremio_SQL_Execution ",
-                                    "folderPath": "Solution Folder"
-                                }
-                            },
-                            {
-                                "$resourceType": "context",
-                                "name": "OntologyIndex",
-                                "description": "Ontology files data",
-                                "folderPath": "Solution Folder",
-                                "indexName": "OntologyIndex",
-                                "settings": {
-                                    "threshold": 0,
-                                    "resultCount": 3,
-                                    "retrievalMode": "semantic"
-                                },
-                                "id": "c30b9733-f500-47e0-aa13-766e5c8b93c4"
-                            }
-                        ]
-                    },
-                    "requestInput": {
-                        "user_query": naturalQuery,
-                        "ontology": selectedOntology
-                    },
-                    "simulation": {
-                        "instructions": "",
-                        "inputGenerationInstructions": "",
-                        "simulateInput": false,
-                        "enabled": false
-                    },
-                    "mocks": {"definitions": {}},
-                    "source": "playground",
-                    "debug": {
-                        "stepByStep": false,
-                        "toolBreakpoints": []
-                    }
-                };
-
-                // Make the API call through the proxy (hardcoded token included)
-                const response = await fetch(apiUrl, {
+                // Start orchestrator job
+                const startResponse = await fetch('/api/start-job', {
                     method: 'POST',
                     headers: {
-                        'accept': '*/*',
-                        'accept-language': 'en-US,en;q=0.9,ko;q=0.8,nl;q=0.7,pt;q=0.6,bho;q=0.5,bs;q=0.4,ga;q=0.3',
-                        'content-type': 'application/json',
-                        'authorization': `Bearer ${appConfig.uipath_token}`,
-                        'origin': 'https://staging.uipath.com',
-                        'referer': 'https://staging.uipath.com/docsagents/studio_/designer/1c303094-d506-4b43-8a70-ccf85601e6d1?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577',
-                        'x-uipath-internal-tenantid': appConfig.tenant_id
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify({
+                        question: naturalQuery,
+                        current_date: new Date().toISOString().split('T')[0]
+                    })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                if (!startResponse.ok) {
+                    const errorData = await startResponse.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${startResponse.status}`);
                 }
 
-                const data = await response.json();
-                console.log('API Response:', data);
+                const startData = await startResponse.json();
+                console.log('Job started:', startData);
                 
-                // Store the agentRunId for later use
-                if (data.agentRunId) {
-                    console.log('Agent Run ID:', data.agentRunId);
-                    showNotification(`✅ Agent started! Polling for results...`, 'success');
-                    setLoadingMessage('Agent started, waiting for response...');
-                    updateResultsBufferText('Agent started, polling for results...');
+                if (startData.job_key) {
+                    showNotification(`✅ Job started! Key: ${startData.job_key}`, 'success');
+                    setLoadingMessage('Job started, initializing polling...');
+                    updateResultsBufferText('Job started, initializing polling...');
                     
-                    // Store the agentRunId in a global variable or localStorage for later use
-                    window.currentAgentRunId = data.agentRunId;
-                    localStorage.setItem('currentAgentRunId', data.agentRunId);
+                    // Store the job key for later use
+                    window.currentJobKey = startData.job_key;
+                    localStorage.setItem('currentJobKey', startData.job_key);
+                    
+                    // Small delay to ensure UI updates are visible
+                    await new Promise(resolve => setTimeout(resolve, 500));
                     
                     // Start polling for results
-                    const result = await pollAgentStatus(data.agentRunId);
+                    const result = await pollJobResponse(startData.job_key);
                     return result;
                 }
                 
-                throw new Error('No agentRunId received from API');
+                throw new Error('No job key received from API');
                 
             } catch (error) {
-                console.error('Error calling UiPath API:', error);
+                console.error('Error starting job:', error);
                 hideResultsBuffer();
-                throw new Error(`Failed to start agent: ${error.message}`);
+                throw new Error(`Failed to start job: ${error.message}`);
             }
         }
 
-        // Poll agent status and retrieve results
-        async function pollAgentStatus(agentRunId) {
-            const maxAttempts = 30; // 1 minute with 2-second intervals
-            let attempts = 0;
+        // Poll job response and retrieve results with visual timer
+        async function pollJobResponse(jobKey) {
+            const maxAttempts = 60; // 2 minute with 2-second intervals
+            let actualAttempts = 0;
+            let visualAttempts = 0;
+            const startTime = Date.now();
+            let isComplete = false;
             
-            const statusTargetUrl = `https://staging.uipath.com/182cea2d-b8e8-4902-8641-432194600740/93ca45a7-470c-4ff8-bad9-13675fad7267/agentsruntime_/api/execution/agents/1c303094-d506-4b43-8a70-ccf85601e6d1/runs/${agentRunId}/status`;
-            const statusUrl = `/api/proxy?url=${encodeURIComponent(statusTargetUrl)}`;
+            // Start visual timer that updates UI every 2 seconds
+            const visualTimer = setInterval(() => {
+                if (isComplete) {
+                    clearInterval(visualTimer);
+                    return;
+                }
+                
+                visualAttempts = Math.min(visualAttempts + 1, maxAttempts);
+                console.log('📊 Visual progress update:', progressMessage);
+                updateResultsBufferText(progressMessage);
+                setLoadingMessage(progressMessage);
+                
+                // Force immediate DOM update
+                document.body.offsetHeight;
+            }, 2000);
             
-            while (attempts < maxAttempts) {
+            // Start actual API polling
+            while (actualAttempts < maxAttempts && !isComplete) {
                 try {
-                    console.log(`Polling attempt ${attempts + 1}/${maxAttempts}...`);
+                    actualAttempts++;
+                    console.log(`API polling attempt ${actualAttempts}/${maxAttempts}...`);
                     
-                    const response = await fetch(statusUrl, {
+                    const response = await fetch(`/api/job-response/${jobKey}`, {
                         method: 'GET',
                         headers: {
-                            'accept': '*/*',
-                            'accept-language': 'en-US,en;q=0.9,ko;q=0.8,nl;q=0.7,pt;q=0.6,bho;q=0.5,bs;q=0.4,ga;q=0.3',
-                            'content-type': 'application/json',
-                            'authorization': `Bearer ${appConfig.uipath_token}`,
-                            'referer': 'https://staging.uipath.com/docsagents/studio_/designer/1c303094-d506-4b43-8a70-ccf85601e6d1?solutionId=6ed59385-f0dd-4388-aef6-7936efd78577',
-                            'x-uipath-internal-tenantid': appConfig.tenant_id
+                            'Content-Type': 'application/json'
                         }
                     });
                     
@@ -1521,68 +1603,77 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     
-                    const statusData = await response.json();
-                    console.log('Status response:', statusData);
+                    const responseData = await response.json();
+                    console.log('Job response:', responseData);
                     
-                    if (statusData.status === 'completed') {
-                        console.log('Agent completed successfully!');
-                        setLoadingMessage('Processing completed results...');
-                        updateResultsBufferText('Agent completed! Processing results...');
+                    if (responseData.status === 'completed' && responseData.response) {
+                        console.log('Job completed successfully!');
+                        isComplete = true;
+                        clearInterval(visualTimer);
                         
-                        if (statusData.response && statusData.response.result) {
-                            const result = statusData.response.result;
-                            
-                            // Handle SQL query display
-                            if (result.sql_query) {
-                                showNotification('✅ SQL query generated successfully!', 'success');
-                                setLoadingMessage('Query generated, formatting results...');
-                                updateResultsBufferText('SQL query generated, formatting results...');
+                        setLoadingMessage('Processing completed results...');
+                        updateResultsBufferText('Job completed! Processing results...');
+                        
+                        const duration = Date.now() - startTime;
+                        
+                        // The orchestrator returns structured response with generatedSQLQuery, queryExplanation, and queryExecutionResults
+                        const llmResponse = responseData.response;
+                        
+                        showNotification('✅ Job completed successfully!', 'success');
+                        setLoadingMessage('Formatting results...');
+                        updateResultsBufferText('Formatting results...');
+                        
+                        // Display the response content
+                        if (llmResponse) {
+                            // Check if it's the new structured response format
+                            if (typeof llmResponse === 'object' && llmResponse.generatedSQLQuery) {
+                                // New structured format
+                                displayStructuredResults(llmResponse, duration);
+                                return ensureSqlEndsWithSemicolon(llmResponse.generatedSQLQuery);
+                            } else if (typeof llmResponse === 'string') {
+                                // Legacy string format - try to extract SQL
+                                displayResults(llmResponse, duration);
                                 
-                                // Show results in the results section if content is available
-                                if (result.content) {
-                                    displayResults(result.content, statusData.response.duration);
+                                const sqlMatch = llmResponse.match(/```sql\n(.*?)\n```/s) || 
+                                               llmResponse.match(/```\n(SELECT.*?;)\n```/s) ||
+                                               llmResponse.match(/(SELECT.*?;)/s);
+                                
+                                if (sqlMatch && sqlMatch[1]) {
+                                    return ensureSqlEndsWithSemicolon(sqlMatch[1].trim());
                                 }
-                                
-                                return ensureSqlEndsWithSemicolon(result.sql_query);
                             } else {
-                                // No SQL query returned, but still show results if available
-                                showNotification('⚠️ Query not returned by agent, but showing results', 'warning');
-                                setLoadingMessage('Formatting response content...');
-                                updateResultsBufferText('Formatting response content...');
-                                
-                                // Show results in the results section if content is available
-                                if (result.content) {
-                                    displayResults(result.content, statusData.response.duration);
-                                }
-                                
-                                return '-- Query not returned by agent\n-- The agent completed successfully but did not provide a SQL query';
+                                // Unknown format, display as is
+                                displayResults(JSON.stringify(llmResponse, null, 2), duration);
                             }
-                        } else {
-                            hideResultsBuffer();
-                            throw new Error('Invalid response structure from completed agent');
                         }
-                    } else if (statusData.status === 'failed') {
+                        
+                        return '-- SQL query completed successfully\n-- Check results section for detailed response';
+                        
+                    } else if (responseData.status === 'pending') {
+                        // Still running, wait 2 seconds before next API poll
+                        if (actualAttempts < maxAttempts) {
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                        }
+                    } else {
+                        isComplete = true;
+                        clearInterval(visualTimer);
                         hideResultsBuffer();
-                        const errorMsg = statusData.response?.errorMessage || 'Agent execution failed';
-                        throw new Error(`Agent failed: ${errorMsg}`);
-                    }
-                    
-                    // Still running, wait 2 seconds before next poll
-                    attempts++;
-                    updateResultsBufferText(`Polling for results... (${attempts}/${maxAttempts})`);
-                    if (attempts < maxAttempts) {
-                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        throw new Error(`Job failed with status: ${responseData.status}`);
                     }
                     
                 } catch (error) {
-                    console.error('Error polling agent status:', error);
+                    isComplete = true;
+                    clearInterval(visualTimer);
+                    console.error('Error polling job response:', error);
                     throw error;
                 }
             }
             
             // Timeout reached
+            isComplete = true;
+            clearInterval(visualTimer);
             hideResultsBuffer();
-            throw new Error('Timeout: Agent did not complete within 1 minute');
+            throw new Error('Timeout: Job did not complete within 1 minute');
         }
 
         // Helper function to ensure SQL query ends with semicolon
@@ -1599,7 +1690,318 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
             return sqlQuery;
         }
 
-        // Display results in markdown format
+        // Display structured results from the new orchestrator response format
+        function displayStructuredResults(response, duration) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            if (resultsContainer && resultsContent) {
+                // Hide results buffer animation
+                updateResultsBufferText('Finalizing display...');
+                
+                // Small delay to show final message
+                setTimeout(() => {
+                    let formattedContent = '';
+                    
+                    // Add query explanation section
+                    if (response.queryExplanation) {
+                        formattedContent += `
+                            <div class="explanation-section">
+                                <h3 class="result-heading">Query Explanation</h3>
+                                <div class="result-paragraph">${response.queryExplanation}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Add execution results section with enhanced formatting (SQL query removed since it's shown above)
+                    if (response.queryExecutionResults) {
+                        formattedContent += formatExecutionResultsEnhanced(response.queryExecutionResults);
+                    }
+                    
+                    resultsContent.innerHTML = `
+                        <div class="result-header">
+                            <h3>Query Results</h3>
+                            <span class="duration-badge">Completed in ${(duration / 1000).toFixed(2)}s</span>
+                        </div>
+                        <div class="result-content">
+                            ${formattedContent}
+                        </div>
+                    `;
+                    
+                    // Add event listeners for format selector and copy button
+                    setupResultsInteractivity(response.queryExecutionResults);
+                    
+                    resultsContainer.style.display = 'block';
+                    hideResultsBuffer();
+                }, 300);
+            }
+        }
+
+        // Enhanced format execution results with format selector and copy functionality
+        function formatExecutionResultsEnhanced(results) {
+            if (!results) return '';
+            
+            const statusBadge = results.status ? 
+                `<span class="status-badge ${results.status === 'success' ? 'success' : 'error'}">${results.status === 'success' ? 'COMPLETED' : results.status.toUpperCase()}</span>` : '';
+            
+            let html = `
+                <div class="execution-results-section">
+                    <div class="results-header">
+                        <h3 class="result-heading">Execution Results${statusBadge}</h3>
+                        <div class="results-toolbar">
+                            <div class="format-selector">
+                                <label>Format:</label>
+                                <button class="format-btn active" data-format="table" onclick="changeDataFormat('table')">Table</button>
+                                <button class="format-btn" data-format="json" onclick="changeDataFormat('json')">JSON</button>
+                                <button class="format-btn" data-format="csv" onclick="changeDataFormat('csv')">CSV</button>
+                            </div>
+                            <button class="copy-btn" onclick="copyDataToClipboard()">
+                                <span>📋</span> Copy
+                            </button>
+                        </div>
+                    </div>
+            `;
+            
+            if (results.data && Array.isArray(results.data) && results.data.length > 0) {
+                html += `<div id="dataDisplay">${formatAsTable(results.data)}</div>`;
+                html += `<div class="table-info">${results.data.length} row(s) returned</div>`;
+            } else if (results.message) {
+                html += `<div class="result-paragraph">${results.message}</div>`;
+            } else {
+                html += `<div class="result-paragraph">No data returned</div>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Format data as table
+        function formatAsTable(data) {
+            if (!data || !Array.isArray(data) || data.length === 0) return '';
+            
+            let html = `
+                <div class="data-table-container">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+            `;
+            
+            // Generate table headers from first row keys
+            const firstRow = data[0];
+            Object.keys(firstRow).forEach(key => {
+                html += `<th>${key}</th>`;
+            });
+            
+            html += `
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Generate table rows
+            data.forEach(row => {
+                html += '<tr>';
+                Object.values(row).forEach(value => {
+                    html += `<td>${value || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Format data as JSON
+        function formatAsJSON(data) {
+            return `
+                <div class="code-block">
+                    <pre><code>${JSON.stringify(data, null, 2)}</code></pre>
+                </div>
+            `;
+        }
+
+        // Format data as CSV
+        function formatAsCSV(data) {
+            if (!data || !Array.isArray(data) || data.length === 0) return '';
+            
+            const headers = Object.keys(data[0]);
+            let csvContent = headers.join(',') + '\n';
+            
+            data.forEach(row => {
+                const values = headers.map(header => {
+                    let value = row[header] || '';
+                    // Escape commas and quotes in CSV
+                    if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+                        value = '"' + value.replace(/"/g, '""') + '"';
+                    }
+                    return value;
+                });
+                csvContent += values.join(',') + '\n';
+            });
+            
+            return `
+                <div class="code-block">
+                    <pre><code>${csvContent}</code></pre>
+                </div>
+            `;
+        }
+
+        // Setup interactivity for results
+        function setupResultsInteractivity(data) {
+            window.currentResultsData = data;
+        }
+
+        // Change data format
+        function changeDataFormat(format) {
+            const dataDisplay = document.getElementById('dataDisplay');
+            const data = window.currentResultsData?.data;
+            
+            if (!dataDisplay || !data) return;
+            
+            // Update active button
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-format') === format) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update display based on format
+            switch (format) {
+                case 'table':
+                    dataDisplay.innerHTML = formatAsTable(data);
+                    break;
+                case 'json':
+                    dataDisplay.innerHTML = formatAsJSON(data);
+                    break;
+                case 'csv':
+                    dataDisplay.innerHTML = formatAsCSV(data);
+                    break;
+            }
+        }
+
+        // Copy data to clipboard
+        function copyDataToClipboard() {
+            const copyBtn = document.querySelector('.copy-btn');
+            const data = window.currentResultsData?.data;
+            const activeFormatBtn = document.querySelector('.format-btn.active');
+            
+            if (!data || !copyBtn || !activeFormatBtn) return;
+            
+            const format = activeFormatBtn.getAttribute('data-format');
+            let textToCopy = '';
+            
+            switch (format) {
+                case 'table':
+                    // For table, copy as tab-separated values
+                    const headers = Object.keys(data[0]);
+                    textToCopy = headers.join('\t') + '\n';
+                    data.forEach(row => {
+                        const values = headers.map(header => row[header] || '');
+                        textToCopy += values.join('\t') + '\n';
+                    });
+                    break;
+                case 'json':
+                    textToCopy = JSON.stringify(data, null, 2);
+                    break;
+                case 'csv':
+                    const csvHeaders = Object.keys(data[0]);
+                    textToCopy = csvHeaders.join(',') + '\n';
+                    data.forEach(row => {
+                        const values = csvHeaders.map(header => {
+                            let value = row[header] || '';
+                            if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+                                value = '"' + value.replace(/"/g, '""') + '"';
+                            }
+                            return value;
+                        });
+                        textToCopy += values.join(',') + '\n';
+                    });
+                    break;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Visual feedback
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = '<span>✅</span> Copied!';
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = '<span>📋</span> Copy';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showNotification('Failed to copy to clipboard', 'error');
+            });
+        }
+
+        // Format execution results into HTML (legacy format)
+        function formatExecutionResults(results) {
+            if (!results) return '';
+            
+            let html = `
+                <div class="execution-results-section">
+                    <h3 class="result-heading">Execution Results</h3>
+            `;
+            
+            if (results.status) {
+                const statusClass = results.status === 'success' ? 'success' : 'error';
+                html += `<div class="status-badge ${statusClass}">Status: ${results.status}</div>`;
+            }
+            
+            if (results.data && Array.isArray(results.data)) {
+                html += `
+                    <div class="data-table-container">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                `;
+                
+                // Generate table headers from first row keys
+                if (results.data.length > 0) {
+                    const firstRow = results.data[0];
+                    Object.keys(firstRow).forEach(key => {
+                        html += `<th>${key}</th>`;
+                    });
+                }
+                
+                html += `
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                // Generate table rows
+                results.data.forEach(row => {
+                    html += '<tr>';
+                    Object.values(row).forEach(value => {
+                        html += `<td>${value || ''}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                        <div class="table-info">
+                            ${results.data.length} row(s) returned
+                        </div>
+                    </div>
+                `;
+            } else if (results.message) {
+                html += `<div class="result-paragraph">${results.message}</div>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Display results in markdown format (legacy format)
         function displayResults(content, duration) {
             const resultsContainer = document.getElementById('resultsContainer');
             const resultsContent = document.getElementById('resultsContent');
@@ -1793,11 +2195,11 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
         function setLoadingMessage(message) {
             const loadingSubtitle = document.getElementById('loadingSubtitle');
             if (loadingSubtitle) {
-                loadingSubtitle.style.opacity = '0';
-                setTimeout(() => {
-                    loadingSubtitle.textContent = message;
-                    loadingSubtitle.style.opacity = '1';
-                }, 200);
+                loadingSubtitle.textContent = message;
+                loadingSubtitle.title = message; // Fallback for hover tooltip
+                // Force a reflow to ensure the update is visible
+                loadingSubtitle.offsetHeight;
+                console.log('⏳ Loading message updated:', message);
             }
         }
 
@@ -1849,6 +2251,10 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
             const resultsBufferText = document.querySelector('.results-buffer-text');
             if (resultsBufferText) {
                 resultsBufferText.textContent = message;
+                resultsBufferText.title = message; // Fallback for hover tooltip
+                // Force a reflow to ensure the update is visible
+                resultsBufferText.offsetHeight;
+                console.log('🔄 Results buffer updated:', message);
             }
         }
 
@@ -2015,8 +2421,19 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
         }
 
         // Show notification
-        function showNotification(message, type = 'info') {
+        function showNotification(message, type = 'info', duration = 3000) {
+            // Remove any existing polling notifications to avoid spam
+            if (message.includes('Polling for results')) {
+                const existingPollingNotifications = document.querySelectorAll('.polling-notification');
+                existingPollingNotifications.forEach(notif => {
+                    if (notif.parentNode) {
+                        notif.parentNode.removeChild(notif);
+                    }
+                });
+            }
+
             const notification = document.createElement('div');
+            notification.className = message.includes('Polling for results') ? 'polling-notification' : '';
             notification.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -2053,14 +2470,17 @@ DATE_TRUNC('year', CURRENT_DATE) GROUP BY och.Department LIMIT 100;`
                 notification.style.opacity = '1';
             }, 100);
             
-            // Remove after 3 seconds
+            // Remove after specified duration (shorter for polling notifications)
+            const notificationDuration = message.includes('Polling for results') ? 1500 : duration;
             setTimeout(() => {
                 notification.style.transform = 'translateX(100%)';
                 notification.style.opacity = '0';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
                 }, 300);
-            }, 3000);
+            }, notificationDuration);
         }
     </script>
 </body>
